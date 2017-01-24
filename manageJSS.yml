@@ -1,0 +1,30 @@
+---
+########################### Target Host(s) ###########################
+# Specify a Single host
+#       hosts: server1
+# Specify a defined group of hosts from hosts inventory
+#       hosts: production
+# Specify a group of hosts
+#       hosts: server1:server2
+########################### Specify Host(s) ##########################
+- hosts:
+########################### Do Not Modify ###########################
+  become: yes
+  tasks:
+    - name: Start jamf.tomcat8
+      service:
+        name=jamf.tomcat8
+        state=started
+      tags: start
+
+    - name: Shutdown jamf.tomcat8
+      service:
+        name=jamf.tomcat8
+        state=stopped
+      tags: stop
+
+    - name: Restart jamf.tomcat8
+      service:
+        name=jamf.tomcat8
+        state=restarted
+      tags: restart
