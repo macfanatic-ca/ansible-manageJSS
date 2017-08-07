@@ -7,7 +7,7 @@
 # Specify a group of hosts
 #       hosts: server1:server2
 ########################### Specify Host(s) ##########################
-- hosts: 
+- hosts:
 ########################### Do Not Modify ###########################
   become: yes
   tasks:
@@ -15,6 +15,7 @@
       service:
         name: jamf.tomcat8
         state: stopped
+        enabled: no
       tags: stop
 
     - name: Install systemd script
