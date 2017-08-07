@@ -17,10 +17,16 @@
         state: stopped
         enabled: no
 
-    - name: Shutdown jamf.tomcat8
+    - name: Check if jamfpro.service is installed
+      stat:
+        path: /lib/systemd/system/jamfpro.service
+      register: service_status
+
+    - name: Shutdown jamfpro.service
       systemd:
         name: jamfpro.service
         state: stopped
+      when: service_status.stat.exists
 
     - name: Install systemd script
       copy:
