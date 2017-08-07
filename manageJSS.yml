@@ -8,23 +8,50 @@
 #       hosts: server1:server2
 ########################### Specify Host(s) ##########################
 - hosts:
+  vars:
+    # true || false
+    systemd: true
 ########################### Do Not Modify ###########################
   become: yes
   tasks:
-    - name: Start jamf.tomcat8
-      service:
-        name=jamf.tomcat8
-        state=started
-      tags: start
+    - block:
+      - name: Start Jamf Pro
+        service:
+          name: jamf.tomcat8
+          state: started
+          enabled: yes
+        tags: start
 
-    - name: Shutdown jamf.tomcat8
-      service:
-        name=jamf.tomcat8
-        state=stopped
-      tags: stop
+      - name: Shutdown Jamf Pro
+        service:
+          name: jamf.tomcat8
+          state: stopped
+          enabled: no
+        tags: stop
 
-    - name: Restart jamf.tomcat8
-      service:
-        name=jamf.tomcat8
-        state=restarted
-      tags: restart
+      - name: Restart Jamf Pro
+        service:
+          name: jamf.tomcat8
+          state: restarted
+        tags: restart
+      when: not systemd
+
+    - block:
+      - name: Start Jamf Pro
+        systemd:
+          name: jamf.tomcat8
+          state: started
+          enabled: yes
+        tags: start
+      - name: Shutdown Jamf Pro
+        systemd:
+          name: jamf.tomcat8
+          state: stopped
+          enabled: no
+        tags: stop
+      - name: Restart Jamf Pro
+        systemd:
+          name: jamf.tomcat8
+          state: restarted
+        tags: restart
+      when: systemd
