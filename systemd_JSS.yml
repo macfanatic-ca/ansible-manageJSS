@@ -16,7 +16,11 @@
         name: jamf.tomcat8
         state: stopped
         enabled: no
-      tags: stop
+
+    - name: Shutdown jamf.tomcat8
+      systemd:
+        name: jamfpro.service
+        state: stopped
 
     - name: Install systemd script
       copy:
@@ -37,5 +41,4 @@
         daemon_reload: yes
         name: jamfpro.service
         enabled: yes
-        state: started
-      tags: start
+        state: restarted
