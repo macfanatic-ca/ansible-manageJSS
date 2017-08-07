@@ -1,0 +1,26 @@
+[Unit]
+Description=Jamf Pro Tomcat
+After=network.target syslog.target iptables.service
+
+[Service]
+Type=forking
+PIDFile=/usr/local/jss/tomcat/tomcat.pid
+User=jamftomcat
+Group=jamftomcat
+Environment=JSS_HOME=/usr/local/jss
+Environment=NAME=tomcat
+Environment=CATALINA_HOME=/usr/local/jss/tomcat
+Environment=CATALINA_BASE=/usr/local/jss/tomcat
+Environment=JAVA_OPTS=-Djava.awt.headless=true
+Environment=CATALINA_PID=/usr/local/jss/tomcat/tomcat.pid
+Environment=CATALINA_TMPDIR=/usr/local/jss/tomcat/temp
+Environment=LANG=$LANG
+Environment=JSSE_HOME=$JAVA_HOME/jre/
+ExecStart=/usr/local/jss/tomcat/bin/catalina.sh start
+ExecStop=/usr/local/jss/tomcat/bin/catalina.sh stop
+KillMode=process
+Restart=on-failure
+RestartSec=1min
+
+[Install]
+WantedBy=multi-user.target

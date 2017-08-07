@@ -1,0 +1,40 @@
+---
+########################### Target Host(s) ###########################
+# Specify a Single host
+#       hosts: server1
+# Specify a defined group of hosts from hosts inventory
+#       hosts: production
+# Specify a group of hosts
+#       hosts: server1:server2
+########################### Specify Host(s) ##########################
+- hosts: 
+########################### Do Not Modify ###########################
+  become: yes
+  tasks:
+    - name: Shutdown jamf.tomcat8
+      service:
+        name: jamf.tomcat8
+        state: stopped
+      tags: stop
+
+    - name: Install systemd script
+      copy:
+        src: files/jamfpro.service
+        dest: /lib/systemd/system/jamfpro.service
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Create symlink for service
+      file:
+        src: /lib/systemd/system/jamfpro.service
+        dest: /etc/systemd/system/multi-user.target.wants/jamfpro.service
+        state: link
+
+    - name: Start jamfpro
+      systemd:
+        daemon_reload: yes
+        name: jamfpro.service
+        enabled: yes
+        state: started
+      tags: start
