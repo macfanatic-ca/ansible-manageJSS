@@ -39,19 +39,21 @@
     - block:
       - name: Start Jamf Pro
         systemd:
-          name: jamf.tomcat8
+          name: jamfpro.service
           state: started
           enabled: yes
         tags: start
+
       - name: Shutdown Jamf Pro
         systemd:
-          name: jamf.tomcat8
+          name: jamfpro.service
           state: stopped
           enabled: no
         tags: stop
+
       - name: Restart Jamf Pro
         systemd:
-          name: jamf.tomcat8
+          name: jamfpro.service
           state: restarted
         tags: restart
       when: systemd
