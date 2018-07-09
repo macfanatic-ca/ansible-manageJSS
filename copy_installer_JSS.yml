@@ -1,0 +1,18 @@
+---
+########################### Target Host(s) ###########################
+# Specify a Single host
+#       hosts: server1
+# Specify a defined group of hosts from hosts inventory
+#       hosts: production
+# Specify a group of hosts
+#       hosts: server1:server2
+########################### Specify Host(s) ##########################
+- hosts: macfanatic-do-jss
+########################### Do Not Modify ###########################
+  vars:
+    installer_location: ~/Downloads/Jamf/10.5.0/jamf-pro-installer-linux-10.5.0.zip
+  tasks:
+    - name: Copy and unzip Jamf Pro Installer
+      unarchive:
+        src: "{{ installer_location }}"
+        dest: /tmp/
